@@ -1,8 +1,11 @@
-package com.example.fakestoreapi
+package com.example.fakestoreapi.view.activity
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.example.fakestoreapi.R
 import com.example.fakestoreapi.databinding.ActivityDashboardBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,5 +32,14 @@ class DashboardActivity : AppCompatActivity() {
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.fragmentContainerView3) as NavHostFragment
+
+        // Get the NavController from the NavHostFragment
+        val navController = navHostFragment.navController
+
+        // Setup the BottomNavigationView to work with NavController
+        // This allows navigation between fragments using the bottom nav menu
+        binding.bottomNav.setupWithNavController(navController)
     }
 }

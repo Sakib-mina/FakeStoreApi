@@ -1,8 +1,6 @@
-package com.example.fakestoreapi
-
+package com.example.fakestoreapi.data.ApiRequest
 
 import com.google.gson.annotations.SerializedName
-
 
 /**
  * Data class representing the login request body.

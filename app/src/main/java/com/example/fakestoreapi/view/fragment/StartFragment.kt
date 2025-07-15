@@ -1,12 +1,15 @@
-package com.example.fakestoreapi
+package com.example.fakestoreapi.view.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.example.fakestoreapi.R
 import com.example.fakestoreapi.databinding.FragmentStartBinding
+import com.example.fakestoreapi.view.activity.DashboardActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,6 +38,8 @@ class StartFragment : Fragment() {
             loginBtn.setOnClickListener {
                 // Navigate to LoginFragment
                 findNavController().navigate(R.id.action_startFragment_to_loginFragment)
+//                startActivity(Intent(requireContext(), DashboardActivity::class.java))
+//                requireActivity().finish()
             }
             registerBtn.setOnClickListener {
                 // Navigate to RegisterFragment

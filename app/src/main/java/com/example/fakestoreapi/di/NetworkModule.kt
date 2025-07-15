@@ -1,9 +1,13 @@
-package com.example.fakestoreapi
+package com.example.fakestoreapi.di
 
+import com.example.fakestoreapi.AuthInterceptor
+import com.example.fakestoreapi.UserService
+import com.example.fakestoreapi.data.services.AuthService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -42,5 +46,19 @@ object NetworkModule {
         return retrofitBuilder
             .build()
             .create(AuthService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideHttpClient(authInterceptor: AuthInterceptor) : OkHttpClient{
+
+        return OkHttpClient.Builder().addInterceptor (interceptor = authInterceptor).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserService(retrofit: Retrofit.Builder, client: OkHttpClient) : UserService {
+
+        return retrofit.client(client).build().create(UserService::class.java)
     }
 }

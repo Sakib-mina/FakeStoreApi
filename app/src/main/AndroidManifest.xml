@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".FakeStore"
+        android:name=".di.FakeStore"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -15,10 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FakeStoreApi">
         <activity
-            android:name=".DashboardActivity"
+            android:name=".view.activity.DashboardActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".view.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

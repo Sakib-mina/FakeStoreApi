@@ -71,8 +71,12 @@ dependencies {
     //lottie
     implementation(libs.lottie.android)
     implementation(libs.glide)
+    implementation(libs.coil)
+    implementation(libs.circleimageview)
+    implementation(libs.imagepicker)
 
     //ssp sdp
     implementation("com.intuit.ssp:ssp-android:1.1.1")
     implementation("com.intuit.sdp:sdp-android:1.1.1")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 }

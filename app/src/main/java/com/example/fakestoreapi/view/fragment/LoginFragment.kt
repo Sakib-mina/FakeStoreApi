@@ -1,4 +1,4 @@
-package com.example.fakestoreapi
+package com.example.fakestoreapi.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.fakestoreapi.view.viewModel.AuthViewModel
+import com.example.fakestoreapi.view.activity.DashboardActivity
+import com.example.fakestoreapi.R
 import com.example.fakestoreapi.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue

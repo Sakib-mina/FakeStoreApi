@@ -1,4 +1,4 @@
-package com.example.fakestoreapi
+package com.example.fakestoreapi.view.activity
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

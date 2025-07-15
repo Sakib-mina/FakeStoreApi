@@ -1,5 +1,4 @@
-package com.example.fakestoreapi
-
+package com.example.fakestoreapi.data.ApiResponse
 
 import com.google.gson.annotations.SerializedName
 
