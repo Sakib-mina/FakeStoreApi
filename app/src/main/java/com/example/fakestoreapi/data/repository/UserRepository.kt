@@ -1,5 +1,7 @@
-package com.example.fakestoreapi
+package com.example.fakestoreapi.data.repository
 
+import com.example.fakestoreapi.data.ApiResponse.ResponseProfile
+import com.example.fakestoreapi.data.services.UserService
 import retrofit2.Response
 import javax.inject.Inject
 

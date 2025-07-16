@@ -9,7 +9,11 @@
         android:id="@+id/homeFragment"
         android:name="com.example.fakestoreapi.view.dashboard.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/productFragment"
         android:name="com.example.fakestoreapi.view.dashboard.ProductFragment"
@@ -20,4 +24,13 @@
         android:name="com.example.fakestoreapi.view.dashboard.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/productDetailsFragment"
+        android:name="com.example.fakestoreapi.view.dashboard.ProductDetailsFragment"
+        android:label="fragment_product_details"
+        tools:layout="@layout/fragment_product_details" >
+        <action
+            android:id="@+id/action_productDetailsFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 </navigation>

@@ -1,4 +1,4 @@
-package com.example.fakestoreapi
+package com.example.fakestoreapi.utils
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext

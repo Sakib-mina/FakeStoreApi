@@ -43,7 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <EditText
-        android:id="@+id/editTextText"
+        android:id="@+id/searchBox"
         android:layout_width="@dimen/_220sdp"
         android:layout_height="@dimen/_40sdp"
         android:layout_marginTop="@dimen/_16ssp"
@@ -65,9 +65,29 @@
         android:padding="@dimen/_8sdp"
         android:src="@drawable/filter_ic"
         android:elevation="@dimen/_5sdp"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextText"
+        app:layout_constraintBottom_toBottomOf="@+id/searchBox"
         app:layout_constraintEnd_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="@+id/editTextText" />
+        app:layout_constraintTop_toTopOf="@+id/searchBox" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/categoryRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_90sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_16ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchBox" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/categoryRecyclerView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import coil.load
-import com.example.fakestoreapi.ProfileViewModel
+import com.example.fakestoreapi.view.viewModel.ProfileViewModel
 import com.example.fakestoreapi.databinding.FragmentProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
 

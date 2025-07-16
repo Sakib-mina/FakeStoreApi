@@ -1,7 +1,8 @@
 package com.example.fakestoreapi.di
 
-import com.example.fakestoreapi.AuthInterceptor
-import com.example.fakestoreapi.UserService
+import com.example.fakestoreapi.utils.AuthInterceptor
+import com.example.fakestoreapi.data.services.FakeStoreApi
+import com.example.fakestoreapi.data.services.UserService
 import com.example.fakestoreapi.data.services.AuthService
 import dagger.Module
 import dagger.Provides
@@ -24,9 +25,6 @@ object NetworkModule {
 
     private const val BASE_URL = "https://api.escuelajs.co/api/v1/"
 
-    /**
-     * Provides a singleton instance of Retrofit.Builder with the base URL and Gson converter.
-     */
     @Provides
     @Singleton
     fun provideRetrofitBuilder(): Retrofit.Builder {
@@ -35,30 +33,39 @@ object NetworkModule {
             .addConverterFactory(GsonConverterFactory.create())
     }
 
-    /**
-     * Provides a singleton instance of AuthService created from Retrofit.
-     *
-     * @param retrofitBuilder The Retrofit builder used to build the Retrofit instance.
-     */
     @Provides
     @Singleton
-    fun provideAuthService(retrofitBuilder: Retrofit.Builder): AuthService {
-        return retrofitBuilder
+    fun provideHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(authInterceptor)
             .build()
-            .create(AuthService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideHttpClient(authInterceptor: AuthInterceptor) : OkHttpClient{
-
-        return OkHttpClient.Builder().addInterceptor (interceptor = authInterceptor).build()
+    fun provideRetrofit(
+        builder: Retrofit.Builder,
+        client: OkHttpClient
+    ): Retrofit {
+        return builder
+            .client(client)
+            .build()
     }
 
     @Provides
     @Singleton
-    fun provideUserService(retrofit: Retrofit.Builder, client: OkHttpClient) : UserService {
-
-        return retrofit.client(client).build().create(UserService::class.java)
+    fun provideAuthService(retrofit: Retrofit): AuthService {
+        return retrofit.create(AuthService::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideUserService(retrofit: Retrofit): UserService {
+        return retrofit.create(UserService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideApi(retrofit: Retrofit): FakeStoreApi =
+        retrofit.create(FakeStoreApi::class.java)
 }

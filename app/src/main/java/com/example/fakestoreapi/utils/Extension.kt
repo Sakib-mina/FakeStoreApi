@@ -1,4 +1,4 @@
-package com.example.fakestoreapi
+package com.example.fakestoreapi.utils
 
 import android.widget.EditText
 

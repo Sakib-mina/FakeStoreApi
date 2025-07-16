@@ -37,16 +37,15 @@ class StartFragment : Fragment() {
         binding.apply {
             loginBtn.setOnClickListener {
                 // Navigate to LoginFragment
-                findNavController().navigate(R.id.action_startFragment_to_loginFragment)
-//                startActivity(Intent(requireContext(), DashboardActivity::class.java))
-//                requireActivity().finish()
+//                findNavController().navigate(R.id.action_startFragment_to_loginFragment)
+                startActivity(Intent(requireContext(), DashboardActivity::class.java))
+                requireActivity().finish()
             }
             registerBtn.setOnClickListener {
                 // Navigate to RegisterFragment
                 findNavController().navigate(R.id.action_startFragment_to_registerFragment)
             }
         }
-
         return binding.root
     }
 }

@@ -1,4 +1,4 @@
-package com.example.fakestoreapi
+package com.example.fakestoreapi.utils
 
 object Keys {
     const val ACCESS_TOKEN = "ACCESS_TOKEN"

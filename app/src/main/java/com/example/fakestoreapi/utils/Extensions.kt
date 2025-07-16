@@ -1,8 +1,9 @@
-package com.example.fakestoreapi
+package com.example.fakestoreapi.utils
 
 import android.widget.ImageView
 import coil.load
 import coil.request.CachePolicy
+import com.example.fakestoreapi.R
 
 fun ImageView.load(imageUrl: String){
 

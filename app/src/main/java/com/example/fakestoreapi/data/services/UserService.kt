@@ -1,5 +1,6 @@
-package com.example.fakestoreapi
+package com.example.fakestoreapi.data.services
 
+import com.example.fakestoreapi.data.ApiResponse.ResponseProfile
 import retrofit2.Response
 import retrofit2.http.GET
 

@@ -1,4 +1,4 @@
-package com.example.fakestoreapi
+package com.example.fakestoreapi.utils
 
 import okhttp3.Interceptor
 import okhttp3.Response
