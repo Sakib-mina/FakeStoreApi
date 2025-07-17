@@ -9,28 +9,59 @@ import retrofit2.Response
 import javax.inject.Inject
 
 /**
- * Repository class that handles authentication-related operations.
+ * Repository class responsible for handling authentication-related operations,
+ * such as user login and registration.
  *
- * This class abstracts the source of authentication data (network in this case)
- * and provides a clean API for the rest of the application to interact with.
+ * It acts as an abstraction layer between the data source (remote API) and
+ * the domain/business logic, providing a clean and testable API for ViewModels or UseCases.
  *
- * @param service An implementation of [AuthService] used to perform network calls.
+ * This class uses [AuthService], a Retrofit-based interface, to perform actual
+ * network operations.
+ *
+ * @constructor Injects [AuthService] using Hilt for dependency injection.
+ *
+ * @param service An instance of [AuthService] used to communicate with the authentication API.
+ *
+ * @see AuthService
  */
 class AuthRepository @Inject constructor(
     private val service: AuthService
 ) {
 
     /**
-     * Sends a login request to the authentication API.
+     * Sends a login request to the backend server with the user's credentials.
      *
-     * @param request A [com.example.fakestoreapi.data.ApiRequest.LoginRequest] object containing the user's login credentials.
-     * @return A [retrofit2.Response] object containing either a [com.example.fakestoreapi.data.ApiResponse.LoginResponse] on success,
-     *         or an error from the server on failure.
+     * @param request A [LoginRequest] object containing the user's email and password.
+     * @return A [Response] containing a [LoginResponse] object if successful,
+     *         or an HTTP error code/message if failed.
+     *
+     * Example usage:
+     * ```
+     * val response = authRepository.login(LoginRequest("user@example.com", "password"))
+     * if (response.isSuccessful) {
+     *     val loginData = response.body()
+     * }
+     * ```
      */
     suspend fun login(request: LoginRequest): Response<LoginResponse> {
         return service.login(request)
     }
 
+    /**
+     * Sends a registration request to the server to create a new user account.
+     *
+     * @param registerRequest A [RegisterRequest] containing the new user's details.
+     * @return A [Response] containing a [RegisterResponse] object if registration is successful,
+     *         or an error response from the server if it fails.
+     *
+     * Example usage:
+     * ```
+     * val response = authRepository.register(RegisterRequest("John", "john@example.com", "pass123"))
+     * if (response.isSuccessful) {
+     *     val userData = response.body()
+     * }
+     * ```
+     */
     suspend fun register(registerRequest: RegisterRequest): Response<RegisterResponse> {
         return service.register(registerRequest)
     }

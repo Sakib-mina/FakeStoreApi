@@ -14,56 +14,81 @@ import com.example.fakestoreapi.view.viewModel.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
+/**
+ * Fragment responsible for user registration (signup).
+ *
+ * Uses View Binding to access views and an AuthViewModel for
+ * handling registration logic with LiveData observation.
+ *
+ * Annotated with @AndroidEntryPoint for Hilt dependency injection.
+ */
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
-    // View Binding instance for this fragment's layout
+    // View Binding instance to access views from fragment_register.xml
     private lateinit var binding: FragmentRegisterBinding
+
+    // ViewModel instance scoped to this Fragment, provided by Hilt
     private val viewModel: AuthViewModel by viewModels()
 
     /**
-     * Called to have the fragment instantiate its user interface view.
-     * Here we inflate the layout using ViewBinding and return the root view.
+     * Inflates the fragment's layout using View Binding and initializes
+     * user creation and observer setup.
      *
-     * @param inflater LayoutInflater to inflate views in the fragment
-     * @param container Optional parent view that the fragment's UI should be attached to
-     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state
-     * @return The root view of the fragment's layout
+     * @param inflater The LayoutInflater object to inflate views
+     * @param container The parent ViewGroup (if any) to attach the fragment's UI
+     * @param savedInstanceState Previously saved state (if any)
+     * @return The root view of the inflated layout
      */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Initialize view binding for this fragment
+        // Inflate layout using View Binding
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
 
-        createUser()
-        userObserver()
+        setupUserCreation()
+        observeRegisterResult()
 
         return binding.root
     }
 
-    private fun userObserver() {
+    /**
+     * Observes LiveData from the ViewModel for registration response.
+     * On success, navigates to DashboardActivity and finishes current activity.
+     * On failure, shows a Toast message.
+     */
+    private fun observeRegisterResult() {
         viewModel.registerResult.observe(viewLifecycleOwner) { response ->
             if (response.isSuccessful) {
+                // Registration successful: navigate to dashboard
                 val user = response.body()
                 startActivity(Intent(requireContext(), DashboardActivity::class.java))
                 requireActivity().finish()
             } else {
+                // Registration failed: notify user
                 Toast.makeText(context, "Signup failed!", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun createUser() {
+    /**
+     * Sets up click listener on the signup button.
+     * Collects user input and triggers the registration process
+     * via the ViewModel.
+     */
+    private fun setupUserCreation() {
         binding.signUpBtn.setOnClickListener {
-            val name = binding.fullName.text.toString()
-            val email = binding.signUpEmail.text.toString()
-            val password = binding.signUpPassword.text.toString()
+            val name = binding.fullName.text.toString().trim()
+            val email = binding.signUpEmail.text.toString().trim()
+            val password = binding.signUpPassword.text.toString().trim()
             val avatar = "https://api.lorem.space/image/face?w=640&h=480"
 
-           viewModel.register(name = name,email = email, password = password, avatar = avatar)
+            // TODO: Add input validation before calling register
+
+            viewModel.register(name = name, email = email, password = password, avatar = avatar)
         }
     }
-    // You can add lifecycle methods here for UI setup, listeners, etc.
+
+    // Additional lifecycle methods can be added here for UI setup or event handling
 }

@@ -18,7 +18,8 @@
         android:textSize="@dimen/_24ssp"
         android:textStyle="bold|italic"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
 
     <ImageView
         android:id="@+id/imageView2"
@@ -28,7 +29,8 @@
         android:src="@drawable/profile_img"
         app:layout_constraintBottom_toBottomOf="@+id/textView10"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView10" />
+        app:layout_constraintTop_toTopOf="@+id/textView10"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/textView11"
@@ -55,19 +57,21 @@
         android:inputType="text"
         android:padding="@dimen/_10sdp"
         app:layout_constraintStart_toStartOf="@+id/textView11"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+        app:layout_constraintTop_toBottomOf="@+id/textView11"
+        tools:ignore="Autofill,HardcodedText,TextContrastCheck,VisualLintTextFieldSize" />
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="@dimen/_40sdp"
         android:layout_height="@dimen/_40sdp"
         android:background="@drawable/fillter_bg"
+        android:elevation="@dimen/_5sdp"
         android:padding="@dimen/_8sdp"
         android:src="@drawable/filter_ic"
-        android:elevation="@dimen/_5sdp"
         app:layout_constraintBottom_toBottomOf="@+id/searchBox"
         app:layout_constraintEnd_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="@+id/searchBox" />
+        app:layout_constraintTop_toTopOf="@+id/searchBox"
+        tools:ignore="ContentDescription" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/categoryRecyclerView"
@@ -83,6 +87,7 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/_36sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

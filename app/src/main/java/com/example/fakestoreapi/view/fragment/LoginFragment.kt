@@ -17,74 +17,124 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
 
 /**
- * Fragment for handling user login.
+ * Fragment responsible for handling user authentication (login) functionality.
  *
- * Uses MVVM architecture, Hilt for DI, and ViewBinding for UI interaction.
+ * Implements:
+ * - MVVM architecture pattern
+ * - Hilt for dependency injection
+ * - ViewBinding for safe view access
+ * - LiveData for observing authentication state
+ * - Navigation Component for screen transitions
+ *
+ * Flow:
+ * 1. User enters credentials
+ * 2. Validates input client-side
+ * 3. Sends request via ViewModel
+ * 4. Observes response and navigates to Dashboard on success
  */
-@AndroidEntryPoint
+@AndroidEntryPoint  // Enables Hilt dependency injection for this Fragment
 class LoginFragment : Fragment() {
 
+    // ViewBinding instance for safely accessing views
     private lateinit var binding: FragmentLoginBinding
 
-    // Get ViewModel instance scoped to this Fragment
-    private val viewModel: AuthViewModel by viewModels()
+    /**
+     * AuthViewModel instance scoped to this Fragment's lifecycle.
+     * Handles all authentication business logic.
+     */
+    private val viewModel: AuthViewModel by viewModels()  // Uses property delegation for lazy initialization
 
+    /**
+     * Called to create the fragment's view hierarchy.
+     *
+     * @param inflater LayoutInflater to inflate views
+     * @param container Parent view group for attachment
+     * @param savedInstanceState Previously saved state (if any)
+     * @return Root View of the inflated layout
+     */
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate layout with ViewBinding
+        // Initialize ViewBinding
         binding = FragmentLoginBinding.inflate(inflater, container, false)
 
+        // Set up UI interaction handlers
         setupListeners()
+
+        // Configure LiveData observers
         observeLoginResult()
 
         return binding.root
     }
 
     /**
-     * Sets up click listeners for UI components.
+     * Configures all click listeners and user interaction handlers.
+     *
+     * Handles:
+     * - Navigation to registration screen
+     * - Login button submission
+     * - Input validation
      */
     private fun setupListeners() {
         binding.apply {
-            // Navigate to Register screen
+            // Registration navigation text click
             textView6.setOnClickListener {
                 findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
             }
 
-            // Handle sign in button click
+            // Login button click handler
             signInBtn.setOnClickListener {
                 val email = emailLg.text.toString().trim()
                 val password = passwordLogin.text.toString().trim()
 
-                if (email.isNotEmpty() && password.isNotEmpty()) {
-                    viewModel.login(email, password)
-                } else {
-                    Toast.makeText(requireContext(), "Enter a valid email and password", Toast.LENGTH_SHORT).show()
+                when {
+                    // Validate input fields
+                    email.isEmpty() || password.isEmpty() -> {
+                        showToast("Enter a valid email and password")
+                    }
+                    else -> {
+                        // Initiate login process via ViewModel
+                        viewModel.login(email, password)
+                    }
                 }
             }
         }
     }
 
     /**
-     * Observes login LiveData from ViewModel and handles UI updates.
+     * Observes authentication state changes from ViewModel.
+     *
+     * Handles three scenarios:
+     * 1. Successful login (navigates to Dashboard)
+     * 2. Failed login (shows error)
+     * 3. Network/other errors (handled by ViewModel)
      */
     private fun observeLoginResult() {
         viewModel.loginResult.observe(viewLifecycleOwner) { response ->
-            if (response.isSuccessful) {
-                val token = response.body()?.accessToken
-                // Optionally: save token in SharedPreferences or DataStore
+            when {
+                response.isSuccessful -> {
+                    val token = response.body()?.accessToken
+                    // Note: Token should be persisted securely (SharedPrefs/DataStore)
 
-                // Navigate to Dashboard
-                startActivity(Intent(requireContext(), DashboardActivity::class.java))
-                requireActivity().finish()
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    "Login failed. Please check your credentials.",
-                    Toast.LENGTH_SHORT
-                ).show()
+                    // Transition to main application flow
+                    startActivity(Intent(requireContext(), DashboardActivity::class.java))
+                    requireActivity().finish()  // Prevent back navigation to login
+                }
+                else -> {
+                    showToast("Login failed. Please check your credentials.")
+                }
             }
         }
+    }
+
+    /**
+     * Helper method to display Toast messages.
+     *
+     * @param message The text to display in the Toast
+     */
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

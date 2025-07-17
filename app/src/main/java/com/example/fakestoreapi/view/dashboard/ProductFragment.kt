@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.fakestoreapi.R
 import com.example.fakestoreapi.databinding.FragmentProductBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ProductFragment : Fragment() {
     private lateinit var binding: FragmentProductBinding
 

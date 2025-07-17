@@ -17,35 +17,44 @@ import java.lang.Exception
 import javax.inject.Inject
 
 /**
- * ViewModel for handling user authentication logic.
+ * ViewModel responsible for user authentication logic.
  *
- * This class is responsible for preparing and managing the data for the UI (Login screen).
- * It communicates with the [com.example.fakestoreapi.data.repository.AuthRepository] to perform login operations and exposes results
- * to the UI via LiveData.
+ * Manages login and registration operations by communicating with [AuthRepository].
+ * Exposes LiveData for login and registration results to be observed by the UI.
  *
- * @param repository The repository that handles authentication-related API calls.
+ * @param repository Repository handling authentication-related API calls.
  */
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val repository: AuthRepository
 ) : ViewModel() {
 
-    // Backing property for login result LiveData
+    // MutableLiveData backing property for login response
     private val _loginResult = MutableLiveData<Response<LoginResponse>>()
 
     /**
-     * Exposes login response to observers (UI).
+     * LiveData exposing the login response result.
+     * Observed by UI to update login status.
      */
     val loginResult: LiveData<Response<LoginResponse>> = _loginResult
 
+    // MutableLiveData backing property for registration response
     private val _registerResult = MutableLiveData<Response<RegisterResponse>>()
+
+    /**
+     * LiveData exposing the registration response result.
+     * Observed by UI to update registration status.
+     */
     val registerResult: LiveData<Response<RegisterResponse>> = _registerResult
 
     /**
-     * Initiates login process with provided credentials.
+     * Performs user login with given credentials asynchronously.
      *
-     * @param email The user's email.
-     * @param password The user's password.
+     * Launches a coroutine in [viewModelScope] to call repository login function.
+     * Posts the response or error to [_loginResult] LiveData.
+     *
+     * @param email User email address.
+     * @param password User password.
      */
     fun login(email: String, password: String) {
         viewModelScope.launch {
@@ -54,7 +63,7 @@ class AuthViewModel @Inject constructor(
                 val response = repository.login(request)
                 _loginResult.postValue(response)
             } catch (e: Exception) {
-                // Handle error gracefully (optional: log the error or show message)
+                // Optionally log the error here
                 _loginResult.postValue(
                     Response.error(
                         500,
@@ -65,14 +74,36 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Performs user registration asynchronously.
+     *
+     * Launches a coroutine in [viewModelScope] to call repository register function.
+     * Posts the response or error to [_registerResult] LiveData.
+     *
+     * @param name User full name.
+     * @param email User email address.
+     * @param password User password.
+     * @param avatar URL or base64 string for user avatar image.
+     */
     fun register(name: String, email: String, password: String, avatar: String) {
         viewModelScope.launch {
             try {
-                val request = RegisterRequest(avatar = avatar,name = name, password = password, email = email)
+                val request = RegisterRequest(
+                    name = name,
+                    email = email,
+                    password = password,
+                    avatar = avatar
+                )
                 val response = repository.register(request)
                 _registerResult.postValue(response)
-            } catch (e: kotlin.Exception){
-                _registerResult.postValue(Response.error(500,"Register failed".toResponseBody()))
+            } catch (e: Exception) {
+                // Optionally log the error here
+                _registerResult.postValue(
+                    Response.error(
+                        500,
+                        "Register failed".toResponseBody()
+                    )
+                )
             }
         }
     }

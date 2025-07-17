@@ -12,40 +12,65 @@ import com.example.fakestoreapi.databinding.FragmentStartBinding
 import com.example.fakestoreapi.view.activity.DashboardActivity
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
+/**
+ * StartFragment serves as the entry point of the application, providing options for users
+ * to either login or register. This fragment uses ViewBinding for view interaction and
+ * Hilt for dependency injection.
+ *
+ * Features:
+ * - Navigation to Login (currently redirects to DashboardActivity)
+ * - Navigation to Registration
+ * - Clean UI setup with ViewBinding
+ */
+@AndroidEntryPoint // Enables Hilt dependency injection for this fragment
 class StartFragment : Fragment() {
 
-    // ViewBinding instance for this fragment
+    // ViewBinding instance for this fragment, initialized in onCreateView
     private lateinit var binding: FragmentStartBinding
 
     /**
-     * Inflate the layout and setup click listeners for buttons.
+     * Called to have the fragment instantiate its user interface view.
      *
-     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment
-     * @param container If non-null, this is the parent view that the fragment's UI should be attached to
-     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state
-     * @return The root view of the inflated layout
+     * @param inflater The LayoutInflater object that inflates views in the fragment
+     * @param container The parent view that the fragment's UI should be attached to
+     * @param savedInstanceState Bundle containing previous state (if fragment is being recreated)
+     * @return The root View for the fragment's UI
      */
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout using ViewBinding
+        // Initialize ViewBinding by inflating the layout
         binding = FragmentStartBinding.inflate(inflater, container, false)
 
-        // Setup button click listeners for navigation
+        // Set up click listeners for the buttons
+        setupButtonListeners()
+
+        return binding.root
+    }
+
+    /**
+     * Configures click listeners for the login and register buttons.
+     *
+     * Note: Currently the login button redirects directly to DashboardActivity
+     * instead of navigating to LoginFragment (commented code shows original intent).
+     */
+    private fun setupButtonListeners() {
         binding.apply {
             loginBtn.setOnClickListener {
-                // Navigate to LoginFragment
-//                findNavController().navigate(R.id.action_startFragment_to_loginFragment)
+                // Original navigation to LoginFragment (currently commented out)
+                // findNavController().navigate(R.id.action_startFragment_to_loginFragment)
+
+                // Temporary implementation: Directly launch DashboardActivity
                 startActivity(Intent(requireContext(), DashboardActivity::class.java))
-                requireActivity().finish()
+                requireActivity().finish() // Close the current activity to prevent going back
             }
+
             registerBtn.setOnClickListener {
-                // Navigate to RegisterFragment
+                // Navigate to RegisterFragment using Navigation Component
                 findNavController().navigate(R.id.action_startFragment_to_registerFragment)
             }
         }
-        return binding.root
     }
 }
